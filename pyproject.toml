@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostprompt"
+version = "0.1.0"
+description = "Find hidden prompt injections, ASCII smuggling and Trojan Source characters before your AI agent does."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Cyberspidey617" }]
+keywords = ["security", "prompt-injection", "llm", "ai-security", "mcp", "unicode", "ascii-smuggling", "trojan-source", "sast", "devsecops"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Cyberspidey617/ghostprompt"
+Issues = "https://github.com/Cyberspidey617/ghostprompt/issues"
+
+[project.scripts]
+ghostprompt = "ghostprompt.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,48 @@
+name: "GhostPrompt"
+description: "Find hidden prompt injections, ASCII smuggling and Trojan Source characters in your repository"
+author: "Cyberspidey617"
+branding:
+  icon: "eye-off"
+  color: "purple"
+inputs:
+  path:
+    description: "Files or directories to scan"
+    default: "."
+  fail-on:
+    description: "Fail the job at this severity or above (low|medium|high|critical|none)"
+    default: "high"
+  exclude:
+    description: "Space-separated globs to exclude"
+    default: ""
+  sarif:
+    description: "Upload results to GitHub code scanning (needs security-events: write)"
+    default: "false"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install GhostPrompt
+      shell: bash
+      run: pip install --quiet "${{ github.action_path }}"
+    - name: Scan
+      shell: bash
+      env:
+        GP_PATH: ${{ inputs.path }}
+        GP_FAIL_ON: ${{ inputs.fail-on }}
+        GP_EXCLUDE: ${{ inputs.exclude }}
+        GP_SARIF: ${{ inputs.sarif }}
+      run: |
+        excludes=()
+        for e in $GP_EXCLUDE; do excludes+=(--exclude "$e"); done
+        if [ "$GP_SARIF" = "true" ]; then
+          ghostprompt $GP_PATH "${excludes[@]}" --format sarif --output ghostprompt.sarif --fail-on none
+        fi
+        ghostprompt $GP_PATH "${excludes[@]}" --fail-on "$GP_FAIL_ON"
+    - name: Upload SARIF
+      if: always() && inputs.sarif == 'true'
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ghostprompt.sarif
+        category: ghostprompt

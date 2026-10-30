@@ -1,0 +1,6 @@
+- id: ghostprompt
+  name: GhostPrompt (hidden prompt injection scan)
+  description: Blocks commits that contain hidden prompt injections or invisible Unicode.
+  entry: ghostprompt
+  language: python
+  types: [text]
