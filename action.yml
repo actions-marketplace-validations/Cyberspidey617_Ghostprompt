@@ -1,4 +1,4 @@
-name: "GhostPrompt"
+name: "GhostPrompt Scanner"
 description: "Find hidden prompt injections, ASCII smuggling and Trojan Source characters in your repository"
 author: "Cyberspidey617"
 branding:
